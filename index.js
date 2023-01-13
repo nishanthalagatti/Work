@@ -88,6 +88,35 @@ const query3 = (matchData, ballByBallData, year) => {
   console.log(ans);
 };
 
+const query4 = (matchData, ballByBallData, year) => {
+  const stats = {};
+  const matchesPlayedInYear = matchData.filter((match) => match.year === year);
+  const matchIds = matchesPlayedInYear.map((match) => match.id);
+  const reqBallByBallData = ballByBallData.filter(
+    (ball) => matchIds.indexOf(ball.id) !== -1
+  );
+  for (let ball of reqBallByBallData) {
+    if (stats.hasOwnProperty(ball.bowler)) {
+      stats[ball.bowler].runs += ball.total_runs;
+      stats[ball.bowler].balls++;
+    } else {
+      stats[ball.bowler] = {};
+      stats[ball.bowler].runs = ball.total_runs;
+      stats[ball.bowler].balls = 1;
+    }
+  }
+
+  let bowlerEconomies = [];
+  for (let bowler in stats) {
+    bowlerEconomies.push({
+      bowler: bowler,
+      economy: stats[bowler].runs / stats[bowler].balls,
+    });
+  }
+  bowlerEconomies.sort((a, b) => a.economy - b.economy);
+  console.log(bowlerEconomies.slice(0, 10));
+};
+
 const main = async () => {
   let matchData = await fetchMatchData("./Dataset/IPL Matches 2008-2020.csv");
   query1(matchData);
@@ -96,6 +125,7 @@ const main = async () => {
     "./Dataset/IPL Ball-by-Ball 2008-2020.csv"
   );
   query3(matchData, ballByBallData, 2016);
+  query4(matchData, ballByBallData, 2015);
 };
 
 main();
