@@ -73,6 +73,21 @@ const query2 = (matchData) => {
   console.log(ans);
 };
 
+const query3 = (matchData, ballByBallData, year) => {
+  const ans = {};
+  const matchesPlayedInYear = matchData.filter((match) => match.year === year);
+  const matchIds = matchesPlayedInYear.map((match) => match.id);
+  const reqBallByBallData = ballByBallData.filter(
+    (ball) => matchIds.indexOf(ball.id) !== -1
+  );
+  for (let ball of reqBallByBallData) {
+    if (ans.hasOwnProperty(ball.bowling_team))
+      ans[ball.bowling_team] += ball.extra_runs;
+    else ans[ball.bowling_team] = ball.extra_runs;
+  }
+  console.log(ans);
+};
+
 const main = async () => {
   let matchData = await fetchMatchData("./Dataset/IPL Matches 2008-2020.csv");
   query1(matchData);
@@ -80,6 +95,7 @@ const main = async () => {
   let ballByBallData = await fetchBallByBallData(
     "./Dataset/IPL Ball-by-Ball 2008-2020.csv"
   );
+  query3(matchData, ballByBallData, 2016);
 };
 
 main();
