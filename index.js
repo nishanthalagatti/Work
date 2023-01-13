@@ -47,13 +47,21 @@ const fetchBallByBallData = (filePath) => {
   });
 };
 
+const query1 = (matchData) => {
+  let ans = {};
+  for (let match of matchData) {
+    if (ans.hasOwnProperty(match.year)) ans[match.year]++;
+    else ans[match.year] = 1;
+  }
+  console.log(ans);
+};
+
 const main = async () => {
   let matchData = await fetchMatchData("./Dataset/IPL Matches 2008-2020.csv");
+  query1(matchData);
   let ballByBallData = await fetchBallByBallData(
     "./Dataset/IPL Ball-by-Ball 2008-2020.csv"
   );
-  console.log(matchData);
-  console.log(ballByBallData);
 };
 
 main();
