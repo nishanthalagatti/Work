@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "csv": "^6.2.5",
+    "nodemon": "^2.0.20"
+  }
+}
