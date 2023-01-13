@@ -56,9 +56,27 @@ const query1 = (matchData) => {
   console.log(ans);
 };
 
+const query2 = (matchData) => {
+  let ans = {};
+  for (let match of matchData) {
+    if (ans.hasOwnProperty(match.year)) {
+      if (ans[match.year].hasOwnProperty(match.winner)) {
+        ans[match.year][match.winner]++;
+      } else {
+        ans[match.year][match.winner] = 1;
+      }
+    } else {
+      ans[match.year] = {};
+      ans[match.year][match.winner] = 1;
+    }
+  }
+  console.log(ans);
+};
+
 const main = async () => {
   let matchData = await fetchMatchData("./Dataset/IPL Matches 2008-2020.csv");
   query1(matchData);
+  query2(matchData);
   let ballByBallData = await fetchBallByBallData(
     "./Dataset/IPL Ball-by-Ball 2008-2020.csv"
   );
