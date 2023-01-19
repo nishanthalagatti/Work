@@ -110,7 +110,7 @@ const query4 = (matchData, ballByBallData, year) => {
   for (let bowler in stats) {
     bowlerEconomies.push({
       bowler: bowler,
-      economy: stats[bowler].runs / stats[bowler].balls,
+      economy: stats[bowler].runs * 6 / stats[bowler].balls,
     });
   }
   bowlerEconomies.sort((a, b) => a.economy - b.economy);
